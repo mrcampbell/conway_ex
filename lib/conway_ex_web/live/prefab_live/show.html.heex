@@ -1,0 +1,27 @@
+<.header>
+  Prefab <%= @prefab.id %>
+  <:subtitle>This is a prefab record from your database.</:subtitle>
+  <:actions>
+    <.link patch={~p"/prefabs/#{@prefab}/show/edit"} phx-click={JS.push_focus()}>
+      <.button>Edit prefab</.button>
+    </.link>
+  </:actions>
+</.header>
+
+<.list>
+  <:item title="Name"><%= @prefab.name %></:item>
+  <:item title="Data"><%= @prefab.data %></:item>
+</.list>
+
+<.back navigate={~p"/prefabs"}>Back to prefabs</.back>
+
+<.modal :if={@live_action == :edit} id="prefab-modal" show on_cancel={JS.patch(~p"/prefabs/#{@prefab}")}>
+  <.live_component
+    module={CWeb.PrefabLive.FormComponent}
+    id={@prefab.id}
+    title={@page_title}
+    action={@live_action}
+    prefab={@prefab}
+    patch={~p"/prefabs/#{@prefab}"}
+  />
+</.modal>

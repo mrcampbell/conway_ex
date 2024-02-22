@@ -18,6 +18,13 @@ defmodule CWeb.Router do
     pipe_through :browser
 
     get "/", PageController, :home
+
+    live "/prefabs", PrefabLive.Index, :index
+    live "/prefabs/new", PrefabLive.Index, :new
+    live "/prefabs/:id/edit", PrefabLive.Index, :edit
+
+    live "/prefabs/:id", PrefabLive.Show, :show
+    live "/prefabs/:id/show/edit", PrefabLive.Show, :edit
   end
 
   # Other scopes may use custom stacks.

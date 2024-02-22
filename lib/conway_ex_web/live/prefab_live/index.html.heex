@@ -1,0 +1,42 @@
+<.header>
+  Listing Prefabs
+  <:actions>
+    <.link patch={~p"/prefabs/new"}>
+      <.button>New Prefab</.button>
+    </.link>
+  </:actions>
+</.header>
+
+<.table
+  id="prefabs"
+  rows={@streams.prefabs}
+  row_click={fn {_id, prefab} -> JS.navigate(~p"/prefabs/#{prefab}") end}
+>
+  <:col :let={{_id, prefab}} label="Name"><%= prefab.name %></:col>
+  <:col :let={{_id, prefab}} label="Data"><%= prefab.data %></:col>
+  <:action :let={{_id, prefab}}>
+    <div class="sr-only">
+      <.link navigate={~p"/prefabs/#{prefab}"}>Show</.link>
+    </div>
+    <.link patch={~p"/prefabs/#{prefab}/edit"}>Edit</.link>
+  </:action>
+  <:action :let={{id, prefab}}>
+    <.link
+      phx-click={JS.push("delete", value: %{id: prefab.id}) |> hide("##{id}")}
+      data-confirm="Are you sure?"
+    >
+      Delete
+    </.link>
+  </:action>
+</.table>
+
+<.modal :if={@live_action in [:new, :edit]} id="prefab-modal" show on_cancel={JS.patch(~p"/prefabs")}>
+  <.live_component
+    module={CWeb.PrefabLive.FormComponent}
+    id={@prefab.id || :new}
+    title={@page_title}
+    action={@live_action}
+    prefab={@prefab}
+    patch={~p"/prefabs"}
+  />
+</.modal>
