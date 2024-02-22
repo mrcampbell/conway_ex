@@ -8,13 +8,17 @@ defmodule C.Data.Prefab do
     field :data, :string
     field :name, :string
 
+    field :cells, {:array, :map}, virtual: true, default: []
+    field :height, :integer, virtual: true, default: 9
+    field :width, :integer, virtual: true, default: 9
+
     timestamps(type: :utc_datetime)
   end
 
   @doc false
   def changeset(prefab, attrs) do
     prefab
-    |> cast(attrs, [:name, :data])
+    |> cast(attrs, [:name, :data, :cells])
     |> validate_required([:name, :data])
   end
 end

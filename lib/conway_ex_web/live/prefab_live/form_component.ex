@@ -21,6 +21,14 @@ defmodule CWeb.PrefabLive.FormComponent do
       >
         <.input field={@form[:name]} type="text" label="Name" />
         <.input field={@form[:data]} type="text" label="Data" />
+        <div>
+          <%= for y <- 0..@prefab.height do %>
+            <%= for x <- 0..@prefab.width do %>
+              <%= inspect({x, y}) %>
+            <% end %>
+            <br />
+          <% end %>
+        </div>
         <:actions>
           <.button phx-disable-with="Saving...">Save Prefab</.button>
         </:actions>
