@@ -8,21 +8,30 @@ defmodule C.Game do
   Any dead cell with exactly three live neighbors becomes a live cell, as if by reproduction.
 
   """
+
+  @type population :: list({number(), number()})
+  @type cell :: {number(), number()}
+
+  @spec tick(population()) :: population()
   def tick(population) do
     survivors = population |> get_surviving_population()
     spawned = population |> get_spawned_population()
     spawned ++ survivors
   end
 
+  @spec offset_shape(population(), cell()) :: population()
   def offset_shape(cells, {x, y}) do
     Enum.map(cells, &{elem(&1, 0) + x, elem(&1, 1) + y})
   end
 
+  @spec get_surviving_population(population()) :: population()
   def get_surviving_population(population),
     do: Enum.reject(population, &should_die?(&1, population))
 
+  @spec get_dying_population(population()) :: population()
   def get_dying_population(population), do: Enum.filter(population, &should_die?(&1, population))
 
+  @spec get_spawned_population(population()) :: population()
   def get_spawned_population(population) do
     population
     # get all possible spawn locations (all neighbors)
@@ -34,6 +43,7 @@ defmodule C.Game do
     |> Enum.filter(&should_spawn?(&1, population))
   end
 
+  @spec neighbor_coordinates(cell()) :: population()
   def neighbor_coordinates({x, y} = _cell) do
     # this is a circle around the cell provided
     [
@@ -48,6 +58,7 @@ defmodule C.Game do
     ]
   end
 
+  @spec count_neighbors_in_population(cell(), population()) :: integer()
   def count_neighbors_in_population(cell, population) do
     # todo: incredibly inefficient, but okay for now
     neighbors = neighbor_coordinates(cell)
@@ -55,6 +66,7 @@ defmodule C.Game do
     length(population) - length(non_neighboring_in_population)
   end
 
+  @spec should_die?({number(), number()}, population()) :: boolean()
   def should_die?(cell, population) do
     count_neighbors_in_population(cell, population)
     |> case do
@@ -64,10 +76,12 @@ defmodule C.Game do
     end
   end
 
+  @spec should_spawn?(cell(), population()) :: boolean()
   def should_spawn?(cell, population) do
     count_neighbors_in_population(cell, population) === 3
   end
 
+  @spec truncate(population(), cell()) :: population()
   def truncate(population, {max_x, max_y} = _max_dimension) do
     population
     |> Enum.reject(fn {x, y} ->
