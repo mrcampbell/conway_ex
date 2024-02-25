@@ -22,11 +22,12 @@ defmodule CWeb.PrefabLive.FormComponent do
         <.input field={@form[:name]} type="text" label="Name" />
         <.input field={@form[:data]} type="text" label="Data" />
         <div>
-          <%= for y <- 0..@prefab.height do %>
-            <%= for x <- 0..@prefab.width do %>
-              <%= inspect({x, y}) %>
-            <% end %>
-            <br />
+          <%= for y <- @height..0 do %>
+            <div class="flex flex-row">
+              <%= for x <- 0..@width do %>
+                <.input type="checkbox" name={"cell:#{x}.#{y}"} />
+              <% end %>
+            </div>
           <% end %>
         </div>
         <:actions>
@@ -44,6 +45,8 @@ defmodule CWeb.PrefabLive.FormComponent do
     {:ok,
      socket
      |> assign(assigns)
+     |> assign(:height, 6)
+     |> assign(:width, 6)
      |> assign_form(changeset)}
   end
 
@@ -93,6 +96,13 @@ defmodule CWeb.PrefabLive.FormComponent do
 
   defp assign_form(socket, %Ecto.Changeset{} = changeset) do
     assign(socket, :form, to_form(changeset))
+    |> assign(cells: data_to_cells(changeset.data.data))
+  end
+
+  defp data_to_cells(data) do
+    data |> IO.puts()
+
+    []
   end
 
   defp notify_parent(msg), do: send(self(), {__MODULE__, msg})

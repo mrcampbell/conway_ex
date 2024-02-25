@@ -6,7 +6,12 @@ defmodule CWeb.PrefabLive.Index do
 
   @impl true
   def mount(_params, _session, socket) do
-    {:ok, stream(socket, :prefabs, Data.list_prefabs())}
+    {:ok,
+     socket
+     |> stream(
+       :prefabs,
+       Data.list_prefabs()
+     )}
   end
 
   @impl true

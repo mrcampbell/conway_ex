@@ -5,12 +5,9 @@ defmodule C.Data.Prefab do
   @primary_key {:id, :binary_id, autogenerate: true}
   @foreign_key_type :binary_id
   schema "prefabs" do
-    field :data, :string
-    field :name, :string
-
-    field :cells, {:array, :map}, virtual: true, default: []
-    field :height, :integer, virtual: true, default: 9
-    field :width, :integer, virtual: true, default: 9
+    # blinker
+    field :data, :string, default: "3.3,3.4,3.2"
+    field :name, :string, default: "blinker"
 
     timestamps(type: :utc_datetime)
   end
@@ -18,7 +15,7 @@ defmodule C.Data.Prefab do
   @doc false
   def changeset(prefab, attrs) do
     prefab
-    |> cast(attrs, [:name, :data, :cells])
+    |> cast(attrs, [:name, :data])
     |> validate_required([:name, :data])
   end
 end
