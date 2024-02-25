@@ -19,6 +19,8 @@ defmodule CWeb.Router do
 
     get "/", PageController, :home
 
+    live "/game", GameLive.Index, :index
+
     live "/prefabs", PrefabLive.Index, :index
     live "/prefabs/new", PrefabLive.Index, :new
     live "/prefabs/:id/edit", PrefabLive.Index, :edit
