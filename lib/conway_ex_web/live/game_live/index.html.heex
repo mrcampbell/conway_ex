@@ -1,10 +1,8 @@
-<div>
-  <%= for y <- 10..-10 do %>
-    <div class="flex flex-row">
-      <%= for x <- -10..10 do %>
-        <.input type="checkbox" id={"cell:#{x}.#{y}"} name={"cell:#{x}.#{y}"} phx-click={JS.push("cell_click", value:
-          %{x: x, y: y})} />
-        <% end %>
-    </div>
-    <% end %>
+<div id="page" class="conway-container" phx-hook="ConwayPage">
 </div>
+<div id="menu-overlay">
+  <input type="checkbox" />
+</div>
+
+
+<div id="test"></div>

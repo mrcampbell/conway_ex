@@ -12,11 +12,20 @@ defmodule C.Game do
   @type population :: list({number(), number()})
   @type cell :: {number(), number()}
 
+  @max_dimen 30
+
   @spec tick(population()) :: population()
   def tick(population) do
     survivors = population |> get_surviving_population()
     spawned = population |> get_spawned_population()
     spawned ++ survivors
+  end
+
+  @spec tick_detailed(population()) :: {population(), population(), population()}
+  def tick_detailed(population) do
+    dying = get_dying_population(population)
+    spawned = get_spawned_population(population)
+    {(population -- dying) ++ spawned, dying, spawned}
   end
 
   @spec offset_shape(population(), cell()) :: population()
@@ -74,7 +83,13 @@ defmodule C.Game do
       x when x > 3 -> true
       _ -> false
     end
+    |> case do
+      true -> true
+      false -> !is_in_range(cell)
+    end
   end
+
+  def is_in_range({x, y}), do: abs(x) < @max_dimen && abs(y) < @max_dimen
 
   @spec should_spawn?(cell(), population()) :: boolean()
   def should_spawn?(cell, population) do
