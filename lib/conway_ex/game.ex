@@ -12,7 +12,7 @@ defmodule C.Game do
   @type population :: list({number(), number()})
   @type cell :: {number(), number()}
 
-  @max_dimen 30
+  @max_dimen 100
 
   @spec tick(population()) :: population()
   def tick(population) do

@@ -28,7 +28,7 @@ const reportScreenDimensionsToServer = (pushEvent) => {
   const page = document.getElementById("test")
   var checkbox = document.createElement('input');
   checkbox.type = "checkbox";
-  checkbox.className = "rounded border-zinc-300 text-zinc-900 focus:ring-0 m-0"
+  checkbox.className = "rounded border-zinc-300 text-zinc-900 focus:ring-0 m-0 outline-none"
   page.append(checkbox)
   let cellHeight = checkbox.clientHeight;
   let cellWidth = checkbox.clientWidth;
@@ -90,7 +90,7 @@ Hooks.ConwayPage = {
     //     this.pushEvent("load-more", {})
     //   }
     // })
-    setupCheckboxes({ x: dimensions.x / 2, y: dimensions.y / 2 }, (str, payload) => this.pushEvent(str, payload))
+    setupCheckboxes({ x: Math.ceil(dimensions.x / 2), y: Math.ceil(dimensions.y / 2) }, (str, payload) => this.pushEvent(str, payload))
   },
   // updated() { this.pending = this.page() }
 }
